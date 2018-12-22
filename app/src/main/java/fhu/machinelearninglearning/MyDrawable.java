@@ -11,7 +11,7 @@ public class MyDrawable extends Drawable {
     public MyDrawable() {
         // Set up color and text size
         mRedPaint = new Paint();
-        mRedPaint.setARGB(255, 255, 0, 0);
+        mRedPaint.setARGB(255,255,255,255);
     }
 
     @Override
