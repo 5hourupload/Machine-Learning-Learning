@@ -16,6 +16,9 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         //sup
 
+        Intent intent = new Intent(getApplicationContext(), k_means_cluster_activity.class);
+        startActivity(intent);
+
         Button startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(new View.OnClickListener()
         {
