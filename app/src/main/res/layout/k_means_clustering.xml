@@ -20,7 +20,7 @@
         app:srcCompat="?attr/actionModeBackground" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/reassignButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,11 +30,11 @@
         android:text="@string/reassign"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button7"
+        app:layout_constraintStart_toEndOf="@+id/updateButton"
         app:layout_constraintTop_toBottomOf="@+id/graphView" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/updateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.441" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/addCentroid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -57,13 +57,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/Add_centroid"
-        app:layout_constraintBottom_toTopOf="@+id/button9"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintBottom_toTopOf="@+id/startingPointsButton"
+        app:layout_constraintEnd_toStartOf="@+id/updateButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphView" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/startingPointsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -72,12 +72,12 @@
         android:layout_marginBottom="8dp"
         android:text="@string/starting_point"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintEnd_toStartOf="@+id/updateButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graphView" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -86,9 +86,9 @@
         android:layout_marginBottom="8dp"
         android:text="@string/restart"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
+        app:layout_constraintEnd_toStartOf="@+id/updateButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button9"
+        app:layout_constraintTop_toBottomOf="@+id/startingPointsButton"
         app:layout_constraintVertical_bias="0.538" />
 
 </android.support.constraint.ConstraintLayout>

@@ -28,6 +28,13 @@
 
             </intent-filter>
         </activity>
+        <activity android:name=".k_means_cluster_activity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
