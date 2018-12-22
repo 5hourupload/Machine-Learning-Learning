@@ -18,15 +18,6 @@ public class k_means_cluster_activity extends AppCompatActivity {
         Button update = findViewById(R.id.updateButton);
         Button reassign = findViewById(R.id.reassignButton);
         Button restart = findViewById(R.id.restartButton);
-        restart.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                MyDrawable mydrawing = new MyDrawable();
-                ImageView image = findViewById(R.id.graphView);
-                image.setImageDrawable(mydrawing);
-            }
-        });
+        
     }
 }
