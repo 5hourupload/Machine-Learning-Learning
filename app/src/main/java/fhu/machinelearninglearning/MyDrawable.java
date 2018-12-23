@@ -16,13 +16,9 @@ public class MyDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        // Get the drawable's bounds
-        int width = getBounds().width();
-        int height = getBounds().height();
-        float radius = Math.min(width, height) / 2;
 
         // Draw a red circle in the center
-        canvas.drawCircle(width/2, height/2, radius, mRedPaint);
+        canvas.drawPoint(100,100,mRedPaint);
     }
 
     @Override
