@@ -4,7 +4,7 @@
     <string name="Add_centroid">Add Centroid</string>
     <string name="update">Update</string>
     <string name="reassign">Reassign</string>
-    <string name="starting_point">Starting Point</string>
+    <string name="choose_data">Choose Data</string>
     <string name="restart">Restart</string>
     <string name="graph_description">Area for graphing the visual cluster</string>
 </resources>

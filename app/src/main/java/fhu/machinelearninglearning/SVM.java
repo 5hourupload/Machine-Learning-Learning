@@ -13,10 +13,10 @@ import android.widget.ImageView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class k_means_cluster_activity extends AppCompatActivity {
+public class SVM extends AppCompatActivity {
     enum Names
     {
-        CHOOSE_DATA, RESTART, ADD_CENTROID;
+        CHOOSE_DATA, RESTART, CHOOSE_TYPE;
     }
 
     List<Button> buttons = new LinkedList<>();
@@ -26,18 +26,17 @@ public class k_means_cluster_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.k_means_clustering);
-        graph = findViewById(R.id.graphView);
+        setContentView(R.layout.svm_layout);
+        graph = findViewById(R.id.SVMView);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
         graph.setMinimumWidth(width);
         graph.setMinimumHeight(width);
-        buttons.add((Button) findViewById(R.id.choose_data));
-        buttons.add((Button) findViewById(R.id.restartButton));
-        buttons.add((Button) findViewById(R.id.addCentroid));
-        buttons.add((Button) findViewById(R.id.updateButton));
-        buttons.add((Button) findViewById(R.id.reassignButton));
+
+        buttons.add((Button) findViewById(R.id.choose_data_svm));
+        buttons.add((Button) findViewById(R.id.restart_svm));
+        buttons.add((Button) findViewById(R.id.choose_type_svm));
         for (Button b : buttons) b.setVisibility(View.GONE);
         buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setVisibility(View.VISIBLE);
         buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setOnClickListener(new View.OnClickListener()
@@ -47,14 +46,14 @@ public class k_means_cluster_activity extends AppCompatActivity {
             {
                 String[] colors = {"red", "green", "blue", "black"};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(k_means_cluster_activity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SVM.this);
                 builder.setTitle("Pick a color");
                 builder.setItems(colors, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         for (Button b : buttons) b.setVisibility(View.GONE);
                         buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
-                        buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.VISIBLE);
+                        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setVisibility(View.VISIBLE);
 
                     }
                 });
@@ -62,32 +61,37 @@ public class k_means_cluster_activity extends AppCompatActivity {
             }
         });
 
-        buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setOnClickListener(new View.OnClickListener()
+        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
 
-                graph.setOnTouchListener(new View.OnTouchListener() {
-                    @Override public boolean onTouch(View view, MotionEvent motionEvent) {
-                        int[] locations = new int[2];
-                        view.getLocationOnScreen(locations);
-                        System.out.println(motionEvent.getX() + " " + motionEvent.getY());
-                        //view.getLocationInWindow(locations);
-                        return false;
+                String[] colors = {"red", "green", "blue", "black"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(SVM.this);
+                builder.setTitle("Pick a color");
+                builder.setItems(colors, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (Button b : buttons) b.setVisibility(View.GONE);
+                        buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
+                        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setVisibility(View.VISIBLE);
+
                     }
                 });
+                builder.show();
 
             }
         });
 
-        buttons.get(1).setOnClickListener(new View.OnClickListener()
+        buttons.get(Names.valueOf("RESTART").ordinal()).setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                MyDrawable mydrawing = new MyDrawable();
-                graph.setImageDrawable(mydrawing);
+                for (Button b : buttons) b.setVisibility(View.GONE);
+                buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setVisibility(View.VISIBLE);
             }
         });
 
