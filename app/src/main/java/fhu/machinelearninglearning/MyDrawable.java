@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 
 public class MyDrawable extends Drawable {
     private final Paint mRedPaint;
+    public static int width, height;
 
     public MyDrawable() {
         // Set up color and text size
@@ -16,7 +17,8 @@ public class MyDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-
+        width = getBounds().width();
+        height = getBounds().height();
         // Draw a red circle in the center
         canvas.drawPoint(100,100,mRedPaint);
     }
