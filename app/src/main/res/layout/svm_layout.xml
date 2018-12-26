@@ -51,6 +51,13 @@
             android:layout_height="wrap_content"
             android:text="Choose Type" />
 
+        <Button
+            android:id="@+id/train_model_svm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Train Model!" />
+
+
 
     </LinearLayout>
 
