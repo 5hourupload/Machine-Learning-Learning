@@ -1,14 +1,13 @@
 package fhu.machinelearninglearning;
-
-import android.graphics.Color;
+import android.graphics.Paint;
 
 public class point {
     private int x,y;
-    private Color color;
-    point(int x, int y, Color color){
+    private Paint paint;
+    point(int x, int y, Paint paint){
         this.x = x;
         this.y = y;
-        this.color = color;
+        this.paint = paint;
     }
 
     public int getX() {
@@ -19,7 +18,7 @@ public class point {
         return y;
     }
 
-    public Color getColor() {
-        return color;
+    public Paint getPaint() {
+        return paint;
     }
 }
