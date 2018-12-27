@@ -7,4 +7,10 @@
     <string name="choose_data">Choose Data</string>
     <string name="restart">Restart</string>
     <string name="graph_description">Area for graphing the visual cluster</string>
+    <string-array name="planets_array">
+        <item>Linear</item>
+        <item>Polynomial</item>
+        <item>Radial Basis Function (RBF)</item>
+        <item>Sigmoid</item>
+    </string-array>
 </resources>
