@@ -43,6 +43,9 @@ public class SVM extends AppCompatActivity
     Paint bluePaintFade = new Paint();
     Paint redPaint = new Paint();
     Paint redPaintFade = new Paint();
+    Paint currentPaint = bluePaint;
+
+    int samples[][];
 
     int length = 0;
 
@@ -52,10 +55,11 @@ public class SVM extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.svm_layout);
 
-        bluePaint.setARGB(255,0,0,255);
-        bluePaintFade.setARGB(127,0,0,255);
-        redPaint.setARGB(255,255,0,0);
-        redPaintFade.setARGB(127,255,0,0);
+
+        bluePaint.setARGB(255, 0, 0, 255);
+        bluePaintFade.setARGB(127, 0, 0, 255);
+        redPaint.setARGB(255, 255, 0, 0);
+        redPaintFade.setARGB(127, 255, 0, 0);
 //        for (int i = 0; i < 10; i++)
 //        {
 //            points.add(new point(((int) (Math.random() * 400)), (int)(Math.random() * 400) , i %2 == 0?bluePaint: redPaint));
@@ -69,10 +73,29 @@ public class SVM extends AppCompatActivity
         graph.setMinimumHeight(width);
         length = width;
 
+        samples = new int[length][length];
+
         Button chooseDataButton = findViewById(R.id.choose_data_svm);
         Button resetButton = findViewById(R.id.restart_svm);
         Button redPoint = findViewById(R.id.svm_red_point);
         Button bluePoint = findViewById(R.id.svm_blue_point);
+
+        redPoint.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                currentPaint = redPaint;
+            }
+        });
+        bluePoint.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                currentPaint = bluePaint;
+            }
+        });
 
         chooseDataButton.setOnClickListener(new View.OnClickListener()
         {
@@ -131,11 +154,14 @@ public class SVM extends AppCompatActivity
         });
 
 
-        graph.setOnTouchListener(new View.OnTouchListener() {
-            @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+        graph.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
                 int[] locations = new int[2];
                 view.getLocationOnScreen(locations);
-                points.add(new point((int) motionEvent.getX(), (int) motionEvent.getY(), bluePaint));
+                points.add(new point((int) motionEvent.getX(), (int) motionEvent.getY(), currentPaint));
                 graph.setImageBitmap(draw());
                 System.out.println(motionEvent.getX() + " " + motionEvent.getY());
                 //view.getLocationInWindow(locations);
@@ -157,21 +183,18 @@ public class SVM extends AppCompatActivity
 
         for (point p : points)
         {
-            arff += p.getX() + "," + p.getY() + "," + (p.getPaint() == bluePaint? "blue" : "red") + "\n";
+            arff += p.getX() + "," + p.getY() + "," + (p.getPaint() == bluePaint ? "blue" : "red") + "\n";
         }
         System.out.println(arff);
         return arff;
     }
+
     private Bitmap draw()
     {
         Bitmap bitmap = Bitmap.createBitmap(length/*width*/, length/*height*/, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
-        for (point p : points)
-        {
-            System.out.println("drawingggg " + p.getX() + " " + p.getY());
-            canvas.drawOval(p.getX()-3, p.getY()-3, p.getX() + 3, p.getY() + 3, p.getPaint());
-        }
+
         BufferedReader br;
         try
         {
@@ -181,30 +204,112 @@ public class SVM extends AppCompatActivity
             Instances data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
             SMO smo = new SMO();
-            String[] options = Utils.splitOptions("-C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers" +
-                    ".functions.supportVector.PolyKernel -C 250007 -E 1.0\"");
+//            NaiveBayes smo = new NaiveBayes();
+//            String[] options = Utils.splitOptions("-C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers" +
+//                    ".functions.supportVector.PolyKernel -C 250007 -E 1.0\"");
+
+            //poly
+            String[] options = Utils.splitOptions("-K \"weka.classifiers" +
+                    ".functions.supportVector.PolyKernel -E 2.0\"");
+
+            options = Utils.splitOptions("-C 1.0 -L 0.0010 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.RBFKernel -C 250007 -G 0.01\"");
+
+
+//            smo.setOptions(options);
+//            LibSVM smo = new LibSVM();
+//            options = new String[8];
+//            options[0] = "-S";
+//            options[1] = "0";
+//            options[2] = "-K";
+//            options[3] = "2";
+//            options[4] = "-G";
+//            options[5] = "1.0";
+//            options[6] = "-C";
+//            options[7] = "1.0";
             smo.setOptions(options);
             smo.buildClassifier(data);
 
-            for (int i = 0 ; i < length; i+=1)
+            int interval = 10;
+            for (int i = 0; i < length; i += interval)
             {
-                for (int j = 0 ; j < length; j+=1)
+                for (int j = 0; j < length; j += interval)
                 {
                     Instance instance = new DenseInstance(3);
                     instance.setValue(data.attribute("X"), i);
                     instance.setValue(data.attribute("Y"), j);
                     instance.setDataset(data);
-
-                    canvas.drawPoint(i,j,smo.classifyInstance(instance) == 0? bluePaintFade : redPaintFade);
-//                    System.out.println("The instance: " + instance);
-//                    System.out.println(smo.classifyInstance(instance));
-
+                    int value = (int) smo.classifyInstance(instance);
+                    samples[i][j] = value;
                 }
             }
+
+            for (int i = 0; i < length; i += interval)
+            {
+                for (int j = 0; j < length; j += interval)
+                {
+                    if (i + interval < length && j + interval < length)
+                    {
+                        if (samples[i][j] == samples[i][j + interval] &&
+                                samples[i][j] == samples[i + interval][j + interval] &&
+                                samples[i][j] == samples[i + interval][j])
+                        {
+                            canvas.drawRect(new Rect(i, j, i + interval, j + interval), samples[i][j] == 0 ? bluePaintFade : redPaintFade);
+
+
+                        }
+                        else
+                        {
+                            for (int k = i; k < i + interval; k++)
+                            {
+                                for (int l = j; l < j + interval; l++)
+                                {
+                                    if (k >= length) continue;
+                                    if (l >= length) continue;
+                                    Instance instance = new DenseInstance(3);
+                                    instance.setValue(data.attribute("X"), k);
+                                    instance.setValue(data.attribute("Y"), l);
+                                    instance.setDataset(data);
+
+                                    int value = (int) smo.classifyInstance(instance);
+                                    samples[k][l] = value;
+                                    canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int k = i; k < i + interval; k++)
+                        {
+                            for (int l = j; l < j + interval; l++)
+                            {
+                                if (k >= length) break;
+                                if (l >= length) continue;
+                                Instance instance = new DenseInstance(3);
+                                instance.setValue(data.attribute("X"), k);
+                                instance.setValue(data.attribute("Y"), l);
+                                instance.setDataset(data);
+
+                                int value = (int) smo.classifyInstance(instance);
+                                samples[k][l] = value;
+                                canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
+                            }
+                        }
+                    }
+                }
+
+//                    System.out.println("The instance: " + instance);
+//                    System.out.println(smo.classifyInstance(instance));
+            }
+
 
         } catch (Exception e)
         {
             e.printStackTrace();
+        }
+        for (point p : points)
+        {
+            canvas.drawOval(p.getX() - 10, p.getY() - 10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
         return bitmap;
     }
