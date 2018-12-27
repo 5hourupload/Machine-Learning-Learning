@@ -69,7 +69,7 @@ public class k_means_cluster_activity extends AppCompatActivity {
                         buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
                         buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.VISIBLE);
 
-                        points = pointGenerator.generatePoints(200,length,length);
+                        points = pointGenerator.generateRandomPoints(200,length,length);
                         graph.setImageBitmap(draw());
 
                     }
@@ -88,8 +88,8 @@ public class k_means_cluster_activity extends AppCompatActivity {
                         centroids.add(new point((int) motionEvent.getX(), (int) motionEvent.getY(), tempColor));
                         //System.out.println(motionEvent.getX() + " " + motionEvent.getY());
                         //view.getLocationInWindow(locations);
-                        graph.setImageBitmap(draw());
                         groupPoints();
+                        graph.setImageBitmap(draw());
                         return false;
                     }
                 });
@@ -134,10 +134,11 @@ public class k_means_cluster_activity extends AppCompatActivity {
         for(point p: points){
             double shortestDistance = length + 100;
             for(point c: centroids){
-                double distance = Math.sqrt((c.getX() - p.getX())+(c.getY() - p.getY()));
+                double distance = Math.sqrt(Math.pow((c.getX() - p.getX()), 2) + Math.pow((c.getY() - p.getY()), 2));
                 if(distance < shortestDistance){
                     shortestDistance = distance;
                     p.setPaint(c.getPaint());
+                    System.out.println("Color is changing");
                 }
             }
         }
@@ -150,7 +151,7 @@ public class k_means_cluster_activity extends AppCompatActivity {
 
         for (point p : points)
         {
-            canvas.drawOval(p.getX()-5, p.getY()-5, p.getX() + 5, p.getY() + 5, p.getPaint());
+            canvas.drawOval(p.getX()-10, p.getY()-10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
 
         for (point p : centroids)
