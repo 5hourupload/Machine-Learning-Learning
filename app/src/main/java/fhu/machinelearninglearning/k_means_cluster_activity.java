@@ -69,7 +69,7 @@ public class k_means_cluster_activity extends AppCompatActivity {
                         buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
                         buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.VISIBLE);
 
-                        points = pointGenerator.generateRandomPoints(200,length,length);
+                        points = pointGenerator.generateRandomPoints(200,length);
                         graph.setImageBitmap(draw());
 
                     }
