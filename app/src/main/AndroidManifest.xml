@@ -41,7 +41,30 @@
 
             </intent-filter>
         </activity>
+        <activity android:name=".NB">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
+            </intent-filter>
+        </activity>
+        <activity android:name=".DecisionTree">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".LinReg">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
+        </activity>
+        <activity android:name=".LogReg">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

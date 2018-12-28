@@ -3,7 +3,6 @@ package fhu.machinelearninglearning;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -15,27 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import weka.classifiers.Evaluation;
-import weka.classifiers.bayes.NaiveBayes;
-import weka.classifiers.functions.SMO;
-import weka.classifiers.functions.supportVector.RBFKernel;
-import weka.core.DenseInstance;
-import weka.core.Drawable;
-import weka.core.Instance;
-import weka.core.Instances;
-import weka.core.Utils;
-import weka.core.converters.ConverterUtils.DataSource;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import weka.core.DenseInstance;
+import weka.core.Instance;
+import weka.core.Instances;
 
-public class SVM extends AppCompatActivity
+
+public class DecisionTree extends AppCompatActivity
 {
     List<point> points = new LinkedList<>();
     ImageView graph;
@@ -53,7 +44,7 @@ public class SVM extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.svm_layout);
+        setContentView(R.layout.dt_layout);
 
 
         bluePaint.setARGB(255, 0, 0, 255);
@@ -104,7 +95,7 @@ public class SVM extends AppCompatActivity
             {
                 String[] colors = {"red", "green", "blue", "black"};
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(SVM.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DecisionTree.this);
                 builder.setTitle("Pick a color");
                 builder.setItems(colors, new DialogInterface.OnClickListener()
                 {
@@ -203,31 +194,22 @@ public class SVM extends AppCompatActivity
             br = new BufferedReader(new InputStreamReader(is));
             Instances data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-            SMO smo = new SMO();
-//            NB smo = new NB();
-//            String[] options = Utils.splitOptions("-C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers" +
-//                    ".functions.supportVector.PolyKernel -C 250007 -E 1.0\"");
-
-            //poly
-            String[] options = Utils.splitOptions("-K \"weka.classifiers" +
-                    ".functions.supportVector.PolyKernel -E 2.0\"");
-
-            options = Utils.splitOptions("-C 1.0 -L 0.0010 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers.functions.supportVector.RBFKernel -C 250007 -G 0.01\"");
 
 
-//            smo.setOptions(options);
-//            LibSVM smo = new LibSVM();
-//            options = new String[8];
-//            options[0] = "-S";
-//            options[1] = "0";
-//            options[2] = "-K";
-//            options[3] = "2";
-//            options[4] = "-G";
-//            options[5] = "1.0";
-//            options[6] = "-C";
-//            options[7] = "1.0";
-            smo.setOptions(options);
-            smo.buildClassifier(data);
+
+
+            String str1 = tempArff();
+            InputStream is1 = new ByteArrayInputStream(str1.getBytes());
+            br = new BufferedReader(new InputStreamReader(is1));
+            Instances data1 = new Instances(br);
+            data1.setClassIndex(data1.numAttributes() - 1);
+
+//            NaiveBayes nb = new NaiveBayes();
+            weka.classifiers.trees.J48 nb = new weka.classifiers.trees.J48();
+//            LinearRegression nb = new LinearRegression();
+            nb.buildClassifier(data);
+
+
 
             int interval = 10;
             for (int i = 0; i < length; i += interval)
@@ -238,7 +220,7 @@ public class SVM extends AppCompatActivity
                     instance.setValue(data.attribute("X"), i);
                     instance.setValue(data.attribute("Y"), j);
                     instance.setDataset(data);
-                    int value = (int) smo.classifyInstance(instance);
+                    int value = (int) nb.classifyInstance(instance);
                     samples[i][j] = value;
                 }
             }
@@ -270,7 +252,7 @@ public class SVM extends AppCompatActivity
                                     instance.setValue(data.attribute("Y"), l);
                                     instance.setDataset(data);
 
-                                    int value = (int) smo.classifyInstance(instance);
+                                    int value = (int) nb.classifyInstance(instance);
                                     samples[k][l] = value;
                                     canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
                                 }
@@ -290,7 +272,7 @@ public class SVM extends AppCompatActivity
                                 instance.setValue(data.attribute("Y"), l);
                                 instance.setDataset(data);
 
-                                int value = (int) smo.classifyInstance(instance);
+                                int value = (int) nb.classifyInstance(instance);
                                 samples[k][l] = value;
                                 canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
                             }
@@ -312,5 +294,21 @@ public class SVM extends AppCompatActivity
             canvas.drawOval(p.getX() - 10, p.getY() - 10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
         return bitmap;
+    }
+    private String tempArff()
+    {
+        return "@RELATION house\n" +
+                "\n" +
+                "@ATTRIBUTE X NUMERIC\n" +
+                "@ATTRIBUTE Y NUMERIC\n" +
+                "\n" +
+                "@DATA\n" +
+                "0,0 \n" +
+                "1,2 \n" +
+                "2,4 \n" +
+                "3,6 \n" +
+                "4,8 \n" +
+                "5,10 \n" +
+                "6,12";
     }
 }
