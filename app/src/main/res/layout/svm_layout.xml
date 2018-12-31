@@ -14,23 +14,34 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/svm_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/svm_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap screen to add points!"
+        app:layout_constraintBottom_toTopOf="@+id/svm_buttons_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SVMView" />
+
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/svm_buttons_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/data_input_options"
+        app:layout_constraintBottom_toTopOf="@+id/svm_about"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/SVMView">
+        app:layout_constraintTop_toBottomOf="@id/svm_text">
 
         <Button
             android:id="@+id/restart_svm"
@@ -38,47 +49,30 @@
             android:layout_height="wrap_content"
             android:text="Reset" />
 
-
-        <Button
-            android:id="@+id/choose_data_svm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Data" />
-
-
         <Spinner
+            android:id="@+id/svm_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/color_options"
+            android:prompt="@string/nb_prompt"/>
+        <Spinner
+            android:id="@+id/svm_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/svm_type"/>
+            android:entries="@array/svm_options"/>
+
 
     </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/data_input_options"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/svm_about"
+        android:text="About Support Vector Machines"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/svm_buttons_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
-        <Button
-            android:id="@+id/svm_blue_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Blue" />
-
-        <Button
-            android:id="@+id/svm_red_point"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Red" />
-
-
-    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

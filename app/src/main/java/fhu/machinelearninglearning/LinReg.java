@@ -1,5 +1,6 @@
 package fhu.machinelearninglearning;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -44,6 +45,7 @@ public class LinReg extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lin_reg_layout);
 
+        setTitle("Linear Regression");
 
         bluePaint.setARGB(255, 0, 0, 255);
         bluePaintFade.setARGB(127, 0, 0, 255);
@@ -54,7 +56,7 @@ public class LinReg extends AppCompatActivity
 //            points.add(new point(((int) (Math.random() * 400)), (int)(Math.random() * 400) , i %2 == 0?bluePaint: redPaint));
 //        }
 
-        graph = findViewById(R.id.SVMView);
+        graph = findViewById(R.id.linreg_view);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
@@ -64,8 +66,7 @@ public class LinReg extends AppCompatActivity
 
         samples = new int[length][length];
 
-        Button chooseDataButton = findViewById(R.id.choose_data_svm);
-        Button resetButton = findViewById(R.id.restart_svm);
+        Button resetButton = findViewById(R.id.linreg_reset);
 
         resetButton.setOnClickListener(new View.OnClickListener()
         {
@@ -73,6 +74,7 @@ public class LinReg extends AppCompatActivity
             public void onClick(View view)
             {
                 points.clear();
+                graph.setImageBitmap(draw());
             }
         });
 
@@ -89,6 +91,36 @@ public class LinReg extends AppCompatActivity
                 System.out.println(motionEvent.getX() + " " + motionEvent.getY());
                 //view.getLocationInWindow(locations);
                 return false;
+            }
+        });
+
+        Button about = findViewById(R.id.linreg_about);
+        about.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // custom dialog
+                final Dialog dialog = new Dialog(LinReg.this);
+                dialog.setContentView(R.layout.dialog);
+                dialog.setTitle("Title...");
+
+                // set the custom dialog components - text, image and button
+//                TextView text = (TextView) dialog.findViewById(R.id.text);
+//                text.setText("Android custom dialog example!");
+//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+//                image.setImageResource(R.drawable.ic_launcher);
+
+//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+//                dialogButton.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+
+                dialog.show();
             }
         });
     }

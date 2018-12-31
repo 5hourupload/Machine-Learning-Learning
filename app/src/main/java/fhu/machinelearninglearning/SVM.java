@@ -1,5 +1,6 @@
 package fhu.machinelearninglearning;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,8 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
@@ -55,15 +58,12 @@ public class SVM extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.svm_layout);
 
+        setTitle("Support Vector Machine");
 
         bluePaint.setARGB(255, 0, 0, 255);
         bluePaintFade.setARGB(127, 0, 0, 255);
         redPaint.setARGB(255, 255, 0, 0);
         redPaintFade.setARGB(127, 255, 0, 0);
-//        for (int i = 0; i < 10; i++)
-//        {
-//            points.add(new point(((int) (Math.random() * 400)), (int)(Math.random() * 400) , i %2 == 0?bluePaint: redPaint));
-//        }
 
         graph = findViewById(R.id.SVMView);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -75,81 +75,33 @@ public class SVM extends AppCompatActivity
 
         samples = new int[length][length];
 
-        Button chooseDataButton = findViewById(R.id.choose_data_svm);
         Button resetButton = findViewById(R.id.restart_svm);
-        Button redPoint = findViewById(R.id.svm_red_point);
-        Button bluePoint = findViewById(R.id.svm_blue_point);
 
-        redPoint.setOnClickListener(new View.OnClickListener()
+        Spinner spinner = findViewById(R.id.svm_spinner);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
-            public void onClick(View view)
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                currentPaint = redPaint;
+                if (i == 0) currentPaint = bluePaint;
+                if (i == 1) currentPaint = redPaint;
             }
-        });
-        bluePoint.setOnClickListener(new View.OnClickListener()
-        {
+
             @Override
-            public void onClick(View view)
+            public void onNothingSelected(AdapterView<?> adapterView)
             {
-                currentPaint = bluePaint;
+
             }
         });
-
-        chooseDataButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                String[] colors = {"red", "green", "blue", "black"};
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(SVM.this);
-                builder.setTitle("Pick a color");
-                builder.setItems(colors, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                    }
-                });
-                builder.show();
-            }
-        });
-
-//        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//
-//                String[] colors = {"red", "green", "blue", "black"};
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(SVM.this);
-//                builder.setTitle("Pick a color");
-//                builder.setItems(colors, new DialogInterface.OnClickListener()
-//                {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which)
-//                    {
-//                        for (Button b : buttons) b.setVisibility(View.GONE);
-//                        buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
-//                        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setVisibility(View.VISIBLE);
-//                        buttons.get(Names.valueOf("TRAIN_MODEL").ordinal()).setVisibility(View.VISIBLE);
-//
-//                    }
-//                });
-//                builder.show();
-//
-//            }
-//        });
-
         resetButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 points.clear();
+                graph.setImageBitmap(draw());
             }
         });
 
@@ -166,6 +118,36 @@ public class SVM extends AppCompatActivity
                 System.out.println(motionEvent.getX() + " " + motionEvent.getY());
                 //view.getLocationInWindow(locations);
                 return false;
+            }
+        });
+
+        Button about = findViewById(R.id.svm_about);
+        about.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // custom dialog
+                final Dialog dialog = new Dialog(SVM.this);
+                dialog.setContentView(R.layout.dialog);
+                dialog.setTitle("Title...");
+
+                // set the custom dialog components - text, image and button
+//                TextView text = (TextView) dialog.findViewById(R.id.text);
+//                text.setText("Android custom dialog example!");
+//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+//                image.setImageResource(R.drawable.ic_launcher);
+
+//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+//                dialogButton.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+
+                dialog.show();
             }
         });
     }

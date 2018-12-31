@@ -1,5 +1,6 @@
 package fhu.machinelearninglearning;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -11,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -46,6 +49,7 @@ public class DecisionTree extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dt_layout);
 
+        setTitle("Decision Trees");
 
         bluePaint.setARGB(255, 0, 0, 255);
         bluePaintFade.setARGB(127, 0, 0, 255);
@@ -56,8 +60,8 @@ public class DecisionTree extends AppCompatActivity
 //            points.add(new point(((int) (Math.random() * 400)), (int)(Math.random() * 400) , i %2 == 0?bluePaint: redPaint));
 //        }
 
-        graph = findViewById(R.id.SVMView);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
+        graph = findViewById(R.id.dt_view);
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
         graph.setMinimumWidth(width);
@@ -66,47 +70,9 @@ public class DecisionTree extends AppCompatActivity
 
         samples = new int[length][length];
 
-        Button chooseDataButton = findViewById(R.id.choose_data_svm);
-        Button resetButton = findViewById(R.id.restart_svm);
-        Button redPoint = findViewById(R.id.svm_red_point);
-        Button bluePoint = findViewById(R.id.svm_blue_point);
+        Button resetButton = findViewById(R.id.dt_reset);
 
-        redPoint.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                currentPaint = redPaint;
-            }
-        });
-        bluePoint.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                currentPaint = bluePaint;
-            }
-        });
 
-        chooseDataButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                String[] colors = {"red", "green", "blue", "black"};
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(DecisionTree.this);
-                builder.setTitle("Pick a color");
-                builder.setItems(colors, new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                    }
-                });
-                builder.show();
-            }
-        });
 
 //        buttons.get(Names.valueOf("CHOOSE_TYPE").ordinal()).setOnClickListener(new View.OnClickListener()
 //        {
@@ -141,6 +107,7 @@ public class DecisionTree extends AppCompatActivity
             public void onClick(View view)
             {
                 points.clear();
+                graph.setImageBitmap(draw());
             }
         });
 
@@ -157,6 +124,54 @@ public class DecisionTree extends AppCompatActivity
                 System.out.println(motionEvent.getX() + " " + motionEvent.getY());
                 //view.getLocationInWindow(locations);
                 return false;
+            }
+        });
+
+        Button about = findViewById(R.id.dt_about);
+        about.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // custom dialog
+                final Dialog dialog = new Dialog(DecisionTree.this);
+                dialog.setContentView(R.layout.dialog);
+                dialog.setTitle("Title...");
+
+                // set the custom dialog components - text, image and button
+//                TextView text = (TextView) dialog.findViewById(R.id.text);
+//                text.setText("Android custom dialog example!");
+//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+//                image.setImageResource(R.drawable.ic_launcher);
+
+//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+//                dialogButton.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+
+                dialog.show();
+            }
+        });
+        Spinner spinner = findViewById(R.id.dt_spinner);
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                if (i == 0) currentPaint = bluePaint;
+                if (i == 1) currentPaint = redPaint;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+
             }
         });
     }
