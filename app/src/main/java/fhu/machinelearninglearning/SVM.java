@@ -20,6 +20,7 @@ import android.widget.Spinner;
 
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.functions.LibSVM;
 import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.supportVector.RBFKernel;
 import weka.core.DenseInstance;
@@ -185,7 +186,7 @@ public class SVM extends AppCompatActivity
             br = new BufferedReader(new InputStreamReader(is));
             Instances data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-            SMO smo = new SMO();
+//            SMO smo = new SMO();
 //            NB smo = new NB();
 //            String[] options = Utils.splitOptions("-C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1 -K \"weka.classifiers" +
 //                    ".functions.supportVector.PolyKernel -C 250007 -E 1.0\"");
@@ -198,16 +199,8 @@ public class SVM extends AppCompatActivity
 
 
 //            smo.setOptions(options);
-//            LibSVM smo = new LibSVM();
-//            options = new String[8];
-//            options[0] = "-S";
-//            options[1] = "0";
-//            options[2] = "-K";
-//            options[3] = "2";
-//            options[4] = "-G";
-//            options[5] = "1.0";
-//            options[6] = "-C";
-//            options[7] = "1.0";
+            LibSVM smo = new LibSVM();
+            options = Utils.splitOptions("-K 2 -C 1000000.0 -w1 1 -W0 1");
             smo.setOptions(options);
             smo.buildClassifier(data);
 
