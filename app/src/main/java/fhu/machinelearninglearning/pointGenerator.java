@@ -70,7 +70,24 @@ public class pointGenerator {
     }
 
     public static List<point> generateSmileyFace(int total, int length){
-        
+        //Generate border points
+        //Find center
+        int centerX = length/2;
+        int centerY = length/2;
+        int radius = (length/2) - 20;
+        double angleDifferential = 360/total;
+        for(int i = 0; i < total; i++){
+            int borderWidth= random.nextInt(10);
+            int X = centerX + ((radius + borderWidth) * (int)Math.cos(Math.toRadians(angleDifferential * i)));
+            int Y = centerY + ((radius + borderWidth) * (int)Math.sin(Math.toRadians(angleDifferential * i)));
+            points.add(new point(X,Y));
+        }
+        //Generate smile points
+
+
+        //Generate eye and nose points
+
+
         return points;
     }
 }
