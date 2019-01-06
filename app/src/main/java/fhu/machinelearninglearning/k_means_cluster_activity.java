@@ -2,11 +2,13 @@ package fhu.machinelearninglearning;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,10 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class k_means_cluster_activity extends AppCompatActivity
-{
-    enum Names
-    {
+public class k_means_cluster_activity extends AppCompatActivity {
+    enum Names {
         CHOOSE_DATA, RESTART, ADD_CENTROID, UPDATE, REASSIGN
     }
 
@@ -43,8 +45,7 @@ public class k_means_cluster_activity extends AppCompatActivity
     TextView text;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.k_means_clustering);
         setTitle("K-Means Clustering");
@@ -84,26 +85,21 @@ public class k_means_cluster_activity extends AppCompatActivity
         buttons.add((Button) findViewById(R.id.reassignButton));
         for (Button b : buttons) b.setVisibility(View.GONE);
         buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setVisibility(View.VISIBLE);
-        buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setOnClickListener(new View.OnClickListener()
-        {
+        buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 final String[] pointOptions = {"Random", "Clusters", "Smiley Face"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(k_means_cluster_activity.this);
                 builder.setTitle("Pick a color");
-                builder.setItems(pointOptions, new DialogInterface.OnClickListener()
-                {
+                builder.setItems(pointOptions, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    public void onClick(DialogInterface dialog, int which) {
                         for (Button b : buttons) b.setVisibility(View.GONE);
                         buttons.get(Names.valueOf("RESTART").ordinal()).setVisibility(View.VISIBLE);
                         buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.VISIBLE);
 
-                        switch (which)
-                        {
+                        switch (which) {
                             case 0:
                                 points = pointGenerator.generateRandomPoints(200, length);
                                 break;
@@ -120,20 +116,15 @@ public class k_means_cluster_activity extends AppCompatActivity
                     }
                 });
 
-                graph.setOnTouchListener(new View.OnTouchListener()
-                {
+                graph.setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent)
-                    {
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
                         int[] locations = new int[2];
                         view.getLocationOnScreen(locations);
                         Paint tempColor = new Paint();
-                        if (centroids.size() < paints.size())
-                        {
+                        if (centroids.size() < paints.size()) {
                             tempColor.setColor(paints.get(centroids.size()));
-                        }
-                        else
-                        {
+                        } else {
                             text.setText("Max centroids reached");
                             return false;
                         }
@@ -147,11 +138,9 @@ public class k_means_cluster_activity extends AppCompatActivity
                 });
                 builder.show();
 
-                buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setOnClickListener(new View.OnClickListener()
-                {
+                buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view)
-                    {
+                    public void onClick(View view) {
                         buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.GONE);
                         buttons.get(Names.valueOf("UPDATE").ordinal()).setVisibility(View.VISIBLE);
                         buttons.get(Names.valueOf("REASSIGN").ordinal()).setVisibility(View.VISIBLE);
@@ -162,11 +151,9 @@ public class k_means_cluster_activity extends AppCompatActivity
         });
 
 
-        buttons.get(Names.valueOf("RESTART").ordinal()).setOnClickListener(new View.OnClickListener()
-        {
+        buttons.get(Names.valueOf("RESTART").ordinal()).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
 
                 for (Button b : buttons) b.setVisibility(View.GONE);
                 buttons.get(Names.valueOf("CHOOSE_DATA").ordinal()).setVisibility(View.VISIBLE);
@@ -176,49 +163,40 @@ public class k_means_cluster_activity extends AppCompatActivity
             }
         });
 
-        buttons.get(Names.valueOf("REASSIGN").ordinal()).setOnClickListener(new View.OnClickListener()
-        {
+        buttons.get(Names.valueOf("REASSIGN").ordinal()).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 groupPoints();
                 graph.setImageBitmap(draw());
             }
         });
 
-        buttons.get(Names.valueOf("UPDATE").ordinal()).setOnClickListener(new View.OnClickListener()
-        {
+        buttons.get(Names.valueOf("UPDATE").ordinal()).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (centroids.size()==0)return;
+            public void onClick(View view) {
+                if (centroids.size() == 0) return;
                 Map<Paint, List<point>> avgLocations = new HashMap<>();
-                for (point p : centroids)
-                {
+                for (point p : centroids) {
                     List<point> temp = new LinkedList<>();
                     avgLocations.put(p.getPaint(), temp);
                 }
-                for (point p : points)
-                {
+                for (point p : points) {
                     List<point> temp = avgLocations.get(p.getPaint());
                     System.out.println(avgLocations.size() + " )000000000000000000");
                     temp.add(p);
                     avgLocations.put(p.getPaint(), temp);
                 }
-                for (point c : centroids)
-                {
+                for (point c : centroids) {
                     List<point> points = avgLocations.get(c.getPaint());
                     double meanX = 0;
                     double meanY = 0;
-                    for (point p : points)
-                    {
+                    for (point p : points) {
                         meanX += p.getX();
                         meanY += p.getY();
                     }
                     meanX /= points.size();
                     meanY /= points.size();
-                    if (points.size() != 0)
-                    {
+                    if (points.size() != 0) {
                         c.setX((int) meanX);
                         c.setY((int) meanY);
                     }
@@ -227,48 +205,48 @@ public class k_means_cluster_activity extends AppCompatActivity
             }
         });
         Button about = findViewById(R.id.kmc_about);
-        about.setOnClickListener(new View.OnClickListener()
-        {
+        about.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                // custom dialog
+            public void onClick(View view) {
                 final Dialog dialog = new Dialog(k_means_cluster_activity.this);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Title...");
-                WebView webView = dialog.findViewById(R.id.web_view);
-                webView.loadUrl("https://en.wikipedia.org/wiki/K-means_clustering");
-
-                // set the custom dialog components - text, image and button
-//                TextView text = (TextView) dialog.findViewById(R.id.text);
-//                text.setText("Android custom dialog example!");
-//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//                image.setImageResource(R.drawable.ic_launcher);
-
-//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-//                dialogButton.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-
+                TextView title = dialog.findViewById(R.id.about_title);
+                title.setText(R.string.kmn_title);
+                TextView description = dialog.findViewById(R.id.about_description);
+                description.setText(R.string.kmn_description);
+                Button launchWiki = dialog.findViewById(R.id.about_button_wiki);
+                launchWiki.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/K-means_clustering"));
+                        startActivity(intent);
+                    }
+                });
+                Button launchSklearn = dialog.findViewById(R.id.about_button_sci);
+                launchSklearn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html"));
+                        startActivity(intent);
+                    }
+                });
                 dialog.show();
             }
         });
     }
 
-    private void groupPoints()
-    {
-        for (point p : points)
-        {
+    private void groupPoints() {
+        for (point p : points) {
             double shortestDistance = length + 100;
-            for (point c : centroids)
-            {
+            for (point c : centroids) {
                 double distance = Math.sqrt(Math.pow((c.getX() - p.getX()), 2) + Math.pow((c.getY() - p.getY()), 2));
-                if (distance < shortestDistance)
-                {
+                if (distance < shortestDistance) {
                     shortestDistance = distance;
                     p.setPaint(c.getPaint());
                 }
@@ -277,36 +255,30 @@ public class k_means_cluster_activity extends AppCompatActivity
 
     }
 
-    private Bitmap draw()
-    {
+    private Bitmap draw() {
         Bitmap bitmap = Bitmap.createBitmap(length/*width*/, length/*height*/, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
-        if (centroids.size() != 0)
-        {
+        if (centroids.size() != 0) {
             shade(canvas, 0, 0, length / 2);
             shade(canvas, length / 2, 0, length / 2);
             shade(canvas, 0, length / 2, length / 2);
             shade(canvas, length / 2, length / 2, length / 2);
         }
-        for (point p : points)
-        {
+        for (point p : points) {
             canvas.drawOval(p.getX() - 10, p.getY() - 10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
 
-        for (point p : centroids)
-        {
+        for (point p : centroids) {
             canvas.drawOval(p.getX() - 20, p.getY() - 20, p.getX() + 20, p.getY() + 20, p.getPaint());
         }
         return bitmap;
     }
 
-    private void shade(Canvas canvas, int x, int y, int sideLength)
-    {
+    private void shade(Canvas canvas, int x, int y, int sideLength) {
         Paint startPaint = getClosestPaint(x, y);
         if (startPaint == getClosestPaint(x, y + sideLength - 1) &&
                 startPaint == getClosestPaint(x + sideLength - 1, y) &&
-                startPaint == getClosestPaint(x + sideLength - 1, y + sideLength - 1))
-        {
+                startPaint == getClosestPaint(x + sideLength - 1, y + sideLength - 1)) {
             Paint clone = new Paint();
             Paint white = new Paint();
             clone.setColor(startPaint.getColor());
@@ -315,9 +287,7 @@ public class k_means_cluster_activity extends AppCompatActivity
 //            canvas.drawRect(new Rect(x - 2, y - 2, x + sideLength + 2, y + sideLength + 2), startPaint);
             canvas.drawRect(new Rect(x, y, x + sideLength, y + sideLength), white);
             canvas.drawRect(new Rect(x, y, x + sideLength, y + sideLength), clone);
-        }
-        else
-        {
+        } else {
             int newLength = sideLength / 2;
             if (sideLength % 2 == 1 && sideLength > 2) newLength++;
             shade(canvas, x, y, newLength);
@@ -327,16 +297,13 @@ public class k_means_cluster_activity extends AppCompatActivity
         }
     }
 
-    private Paint getClosestPaint(int x, int y)
-    {
+    private Paint getClosestPaint(int x, int y) {
         Paint local = null;
         double shortestDistance = length * 2;
 
-        for (point c : centroids)
-        {
+        for (point c : centroids) {
             double distance = Math.sqrt(Math.pow((c.getX() - x), 2) + Math.pow((c.getY() - y), 2));
-            if (distance < shortestDistance)
-            {
+            if (distance < shortestDistance) {
                 shortestDistance = distance;
                 local = c.getPaint();
             }

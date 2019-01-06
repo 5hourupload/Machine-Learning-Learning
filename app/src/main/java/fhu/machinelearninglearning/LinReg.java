@@ -1,9 +1,11 @@
 package fhu.machinelearninglearning;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -11,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -92,31 +95,37 @@ public class LinReg extends AppCompatActivity
         });
 
         Button about = findViewById(R.id.linreg_about);
-        about.setOnClickListener(new View.OnClickListener()
-        {
+        about.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                // custom dialog
+            public void onClick(View view) {
                 final Dialog dialog = new Dialog(LinReg.this);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Title...");
-
-                // set the custom dialog components - text, image and button
-//                TextView text = (TextView) dialog.findViewById(R.id.text);
-//                text.setText("Android custom dialog example!");
-//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//                image.setImageResource(R.drawable.ic_launcher);
-
-//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-//                dialogButton.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-
+                TextView title = dialog.findViewById(R.id.about_title);
+                title.setText(R.string.linreg_title);
+                TextView description = dialog.findViewById(R.id.about_description);
+                description.setText(R.string.linreg_description);
+                Button launchWiki = dialog.findViewById(R.id.about_button_wiki);
+                launchWiki.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Linear_regression"));
+                        startActivity(intent);
+                    }
+                });
+                Button launchSklearn = dialog.findViewById(R.id.about_button_sci);
+                launchSklearn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html#sklearn.linear_model.LinearRegression"));
+                        startActivity(intent);
+                    }
+                });
                 dialog.show();
             }
         });

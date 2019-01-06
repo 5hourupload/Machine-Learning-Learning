@@ -2,10 +2,12 @@ package fhu.machinelearninglearning;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -117,31 +119,37 @@ public class NB extends AppCompatActivity
             }
         });
 
-        about.setOnClickListener(new View.OnClickListener()
-        {
+        about.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                // custom dialog
+            public void onClick(View view) {
                 final Dialog dialog = new Dialog(NB.this);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Title...");
-
-                // set the custom dialog components - text, image and button
-//                TextView text = (TextView) dialog.findViewById(R.id.text);
-//                text.setText("Android custom dialog example!");
-//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//                image.setImageResource(R.drawable.ic_launcher);
-
-//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-//                dialogButton.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-
+                TextView title = dialog.findViewById(R.id.about_title);
+                title.setText(R.string.nb_title);
+                TextView description = dialog.findViewById(R.id.about_description);
+                description.setText(R.string.nb_description);
+                Button launchWiki = dialog.findViewById(R.id.about_button_wiki);
+                launchWiki.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Naive_Bayes_classifier"));
+                        startActivity(intent);
+                    }
+                });
+                Button launchSklearn = dialog.findViewById(R.id.about_button_sci);
+                launchSklearn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://scikit-learn.org/stable/modules/naive_bayes.html"));
+                        startActivity(intent);
+                    }
+                });
                 dialog.show();
             }
         });
