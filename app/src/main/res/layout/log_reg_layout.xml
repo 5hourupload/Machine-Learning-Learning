@@ -7,62 +7,55 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/SVMView"
+        android:id="@+id/logreg_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/logreg_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logreg_text"
+        android:text="Tap screen to add points!"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logreg_view"
+        app:layout_constraintBottom_toTopOf="@+id/logreg_linear_layout"/>
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/logreg_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/data_input_options"
+        app:layout_constraintBottom_toTopOf="@+id/logreg_about"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/SVMView">
+        app:layout_constraintTop_toBottomOf="@id/logreg_text">
 
         <Button
-            android:id="@+id/restart_svm"
+            android:id="@+id/logreg_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reset" />
 
-
-        <Button
-            android:id="@+id/choose_data_svm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Data" />
-
-
-
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/data_input_options"
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/logreg_about"
+        android:text="About Logistic Regression"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout2">
-
-
-    </LinearLayout>
-
+        app:layout_constraintTop_toBottomOf="@id/logreg_linear_layout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 </android.support.constraint.ConstraintLayout>
