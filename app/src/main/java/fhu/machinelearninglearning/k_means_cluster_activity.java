@@ -1,5 +1,6 @@
 package fhu.machinelearninglearning;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -224,6 +226,37 @@ public class k_means_cluster_activity extends AppCompatActivity
                 graph.setImageBitmap(draw());
             }
         });
+        Button about = findViewById(R.id.kmc_about);
+        about.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // custom dialog
+                final Dialog dialog = new Dialog(k_means_cluster_activity.this);
+                dialog.setContentView(R.layout.dialog);
+                dialog.setTitle("Title...");
+                WebView webView = dialog.findViewById(R.id.web_view);
+                webView.loadUrl("https://en.wikipedia.org/wiki/K-means_clustering");
+
+                // set the custom dialog components - text, image and button
+//                TextView text = (TextView) dialog.findViewById(R.id.text);
+//                text.setText("Android custom dialog example!");
+//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
+//                image.setImageResource(R.drawable.ic_launcher);
+
+//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+                // if button is clicked, close the custom dialog
+//                dialogButton.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
+
+                dialog.show();
+            }
+        });
     }
 
     private void groupPoints()
@@ -241,6 +274,7 @@ public class k_means_cluster_activity extends AppCompatActivity
                 }
             }
         }
+
     }
 
     private Bitmap draw()
