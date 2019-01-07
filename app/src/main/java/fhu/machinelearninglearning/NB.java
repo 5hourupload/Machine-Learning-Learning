@@ -46,7 +46,8 @@ public class NB extends AppCompatActivity
     Paint currentPaint = bluePaint;
     int samples[][];
     int length = 0;
-
+    NaiveBayes nb;
+    Instances data;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -179,6 +180,7 @@ public class NB extends AppCompatActivity
         Bitmap bitmap = Bitmap.createBitmap(length/*width*/, length/*height*/, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
+        if (points.size() == 0) return bitmap;
 
         BufferedReader br;
         try
@@ -186,98 +188,14 @@ public class NB extends AppCompatActivity
             String str = getArff();
             InputStream is = new ByteArrayInputStream(str.getBytes());
             br = new BufferedReader(new InputStreamReader(is));
-            Instances data = new Instances(br);
+            data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-
-
-
-
-            String str1 = tempArff();
-            InputStream is1 = new ByteArrayInputStream(str1.getBytes());
-            br = new BufferedReader(new InputStreamReader(is1));
-            Instances data1 = new Instances(br);
-            data1.setClassIndex(data1.numAttributes() - 1);
-
-            NaiveBayes nb = new NaiveBayes();
-//            weka.classifiers.trees.J48 nb = new weka.classifiers.trees.J48();
-//            LinearRegression nb = new LinearRegression();
+            nb = new NaiveBayes();
             nb.buildClassifier(data);
-
-
-
-            int interval = 10;
-            for (int i = 0; i < length; i += interval)
-            {
-                for (int j = 0; j < length; j += interval)
-                {
-                    Instance instance = new DenseInstance(3);
-                    instance.setValue(data.attribute("X"), i);
-                    instance.setValue(data.attribute("Y"), j);
-                    instance.setDataset(data);
-                    int value = (int) nb.classifyInstance(instance);
-                    samples[i][j] = value;
-                }
-            }
-
-            for (int i = 0; i < length; i += interval)
-            {
-                for (int j = 0; j < length; j += interval)
-                {
-                    if (i + interval < length && j + interval < length)
-                    {
-                        if (samples[i][j] == samples[i][j + interval] &&
-                                samples[i][j] == samples[i + interval][j + interval] &&
-                                samples[i][j] == samples[i + interval][j])
-                        {
-                            canvas.drawRect(new Rect(i, j, i + interval, j + interval), samples[i][j] == 0 ? bluePaintFade : redPaintFade);
-
-
-                        }
-                        else
-                        {
-                            for (int k = i; k < i + interval; k++)
-                            {
-                                for (int l = j; l < j + interval; l++)
-                                {
-                                    if (k >= length) continue;
-                                    if (l >= length) continue;
-                                    Instance instance = new DenseInstance(3);
-                                    instance.setValue(data.attribute("X"), k);
-                                    instance.setValue(data.attribute("Y"), l);
-                                    instance.setDataset(data);
-
-                                    int value = (int) nb.classifyInstance(instance);
-                                    samples[k][l] = value;
-                                    canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int k = i; k < i + interval; k++)
-                        {
-                            for (int l = j; l < j + interval; l++)
-                            {
-                                if (k >= length) break;
-                                if (l >= length) continue;
-                                Instance instance = new DenseInstance(3);
-                                instance.setValue(data.attribute("X"), k);
-                                instance.setValue(data.attribute("Y"), l);
-                                instance.setDataset(data);
-
-                                int value = (int) nb.classifyInstance(instance);
-                                samples[k][l] = value;
-                                canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
-                            }
-                        }
-                    }
-                }
-
-//                    System.out.println("The instance: " + instance);
-//                    System.out.println(smo.classifyInstance(instance));
-            }
-
+            shade(canvas, 0, 0, length / 2);
+            shade(canvas, length / 2, 0, length / 2);
+            shade(canvas, 0, length / 2, length / 2);
+            shade(canvas, length / 2, length / 2, length / 2);
 
         } catch (Exception e)
         {
@@ -289,20 +207,43 @@ public class NB extends AppCompatActivity
         }
         return bitmap;
     }
-    private String tempArff()
+
+    private void shade(Canvas canvas, int x, int y, int sideLength) throws Exception
     {
-        return "@RELATION house\n" +
-                "\n" +
-                "@ATTRIBUTE X NUMERIC\n" +
-                "@ATTRIBUTE Y NUMERIC\n" +
-                "\n" +
-                "@DATA\n" +
-                "0,0 \n" +
-                "1,2 \n" +
-                "2,4 \n" +
-                "3,6 \n" +
-                "4,8 \n" +
-                "5,10 \n" +
-                "6,12";
+        Paint startPaint = classify(x, y);
+        if (startPaint == classify(x, y + sideLength - 1) &&
+                startPaint == classify(x + sideLength - 1, y) &&
+                startPaint == classify(x + sideLength - 1, y + sideLength - 1))
+        {
+            Paint clone = new Paint();
+            Paint white = new Paint();
+            clone.setColor(startPaint.getColor());
+            clone.setAlpha(63);
+            white.setARGB(255, 255, 255, 255);
+//            canvas.drawRect(new Rect(x - 2, y - 2, x + sideLength + 2, y + sideLength + 2), startPaint);
+            canvas.drawRect(new Rect(x, y, x + sideLength, y + sideLength), white);
+            canvas.drawRect(new Rect(x, y, x + sideLength, y + sideLength), clone);
+        }
+        else
+        {
+            int newLength = sideLength / 2;
+            if (sideLength % 2 == 1 && sideLength > 2) newLength++;
+            shade(canvas, x, y, newLength);
+            shade(canvas, x + newLength, y, newLength);
+            shade(canvas, x, y + newLength, newLength);
+            shade(canvas, x + newLength, y + newLength, newLength);
+        }
     }
+
+    private Paint classify(int x, int y) throws Exception
+    {
+        Instance instance = new DenseInstance(3);
+        instance.setValue(data.attribute("X"), x);
+        instance.setValue(data.attribute("Y"), y);
+        instance.setDataset(data);
+        int value = (int) nb.classifyInstance(instance);
+        return value == 0 ? bluePaintFade : redPaintFade;
+
+    }
+
 }

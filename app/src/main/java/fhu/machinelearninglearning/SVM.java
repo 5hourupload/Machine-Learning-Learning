@@ -12,12 +12,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +65,8 @@ public class SVM extends AppCompatActivity
     Instances data;
     String options[];
 
+    EditText cost;
+    EditText gamma;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -70,6 +75,40 @@ public class SVM extends AppCompatActivity
 
         setTitle("Support Vector Machine");
 
+        cost = findViewById(R.id.svm_cost);
+        cost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                graph.setImageBitmap(draw());
+            }
+        });
+        gamma = findViewById(R.id.svm_gamma);
+        gamma.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                graph.setImageBitmap(draw());
+            }
+        });
         bluePaint.setARGB(255, 0, 0, 255);
         bluePaintFade.setARGB(127, 0, 0, 255);
         redPaint.setARGB(255, 255, 0, 0);
@@ -117,13 +156,12 @@ public class SVM extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                System.out.println("black paint " + i);
                 try
                 {
-                    options = Utils.splitOptions("-K " + i);
+                    options = Utils.splitOptions("-K " + i + " -G 0.9");
                     if (i == 2)
                     {
-                        options = Utils.splitOptions("-K 2 -C 1000.0 -G 1");
+                        options = Utils.splitOptions("-K 2 -C 1000.0");
                     }
                     graph.setImageBitmap(draw());
                 } catch (Exception e)
@@ -158,8 +196,6 @@ public class SVM extends AppCompatActivity
                 view.getLocationOnScreen(locations);
                 points.add(new point((int) motionEvent.getX(), (int) motionEvent.getY(), currentPaint));
                 graph.setImageBitmap(draw());
-                System.out.println(motionEvent.getX() + " " + motionEvent.getY());
-                //view.getLocationInWindow(locations);
                 return false;
             }
         });
@@ -234,103 +270,19 @@ public class SVM extends AppCompatActivity
             br = new BufferedReader(new InputStreamReader(is));
             data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-
             svm = new LibSVM();
-//            for (int i = 1; i < Integer.MAX_VALUE/2; i *=2)
-//            {
-//                System.out.println(i);
-//                options = Utils.splitOptions("-K 2 -C " + i);
-//
-//                svm.setOptions(options);
-//                svm.buildClassifier(data);
-//                if (classify(0,0) != classify(length,length))
-//                {
-//                    System.out.println("asddaffasdfasdjflaskdf " + i);
-//                    break;
-//                }
-//            }
-//            options = Utils.splitOptions("-K 0 -C 1");
+            String optionsClone[] = options.clone();
             svm.setOptions(options);
+            svm.setCost(Double.parseDouble(cost.getText().toString()));
+            svm.setGamma(Double.parseDouble(gamma.getText().toString()));
+
             svm.buildClassifier(data);
+            options = optionsClone;
 
             shade(canvas, 0, 0, length / 2);
             shade(canvas, length / 2, 0, length / 2);
             shade(canvas, 0, length / 2, length / 2);
             shade(canvas, length / 2, length / 2, length / 2);
-
-//            int interval = 10;
-//            for (int i = 0; i < length; i += interval)
-//            {
-//                for (int j = 0; j < length; j += interval)
-//                {
-//                    Instance instance = new DenseInstance(3);
-//                    instance.setValue(data.attribute("X"), i);
-//                    instance.setValue(data.attribute("Y"), j);
-//                    instance.setDataset(data);
-//                    int value = (int) smo.classifyInstance(instance);
-//                    samples[i][j] = value;
-//                }
-//            }
-//
-//            for (int i = 0; i < length; i += interval)
-//            {
-//                for (int j = 0; j < length; j += interval)
-//                {
-//                    if (i + interval < length && j + interval < length)
-//                    {
-//                        if (samples[i][j] == samples[i][j + interval] &&
-//                                samples[i][j] == samples[i + interval][j + interval] &&
-//                                samples[i][j] == samples[i + interval][j])
-//                        {
-//                            canvas.drawRect(new Rect(i, j, i + interval, j + interval), samples[i][j] == 0 ? bluePaintFade : redPaintFade);
-//
-//
-//                        }
-//                        else
-//                        {
-//                            for (int k = i; k < i + interval; k++)
-//                            {
-//                                for (int l = j; l < j + interval; l++)
-//                                {
-//                                    if (k >= length) continue;
-//                                    if (l >= length) continue;
-//                                    Instance instance = new DenseInstance(3);
-//                                    instance.setValue(data.attribute("X"), k);
-//                                    instance.setValue(data.attribute("Y"), l);
-//                                    instance.setDataset(data);
-//
-//                                    int value = (int) smo.classifyInstance(instance);
-//                                    samples[k][l] = value;
-//                                    canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
-//                                }
-//                            }
-//                        }
-//                    }
-//                    else
-//                    {
-//                        for (int k = i; k < i + interval; k++)
-//                        {
-//                            for (int l = j; l < j + interval; l++)
-//                            {
-//                                if (k >= length) break;
-//                                if (l >= length) continue;
-//                                Instance instance = new DenseInstance(3);
-//                                instance.setValue(data.attribute("X"), k);
-//                                instance.setValue(data.attribute("Y"), l);
-//                                instance.setDataset(data);
-//
-//                                int value = (int) smo.classifyInstance(instance);
-//                                samples[k][l] = value;
-//                                canvas.drawPoint(k, l, value == 0 ? bluePaintFade : redPaintFade);
-//                            }
-//                        }
-//                    }
-//                }
-//
-////                    System.out.println("The instance: " + instance);
-////                    System.out.println(smo.classifyInstance(instance));
-//            }
-
 
         } catch (Exception e)
         {

@@ -209,6 +209,7 @@ public class DecisionTree extends AppCompatActivity
         Bitmap bitmap = Bitmap.createBitmap(length/*width*/, length/*height*/, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
+        if (points.size() == 0) return bitmap;
 
         BufferedReader br;
         try
@@ -218,15 +219,6 @@ public class DecisionTree extends AppCompatActivity
             br = new BufferedReader(new InputStreamReader(is));
             Instances data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-
-
-
-
-            String str1 = tempArff();
-            InputStream is1 = new ByteArrayInputStream(str1.getBytes());
-            br = new BufferedReader(new InputStreamReader(is1));
-            Instances data1 = new Instances(br);
-            data1.setClassIndex(data1.numAttributes() - 1);
 
 //            NaiveBayes nb = new NaiveBayes();
             weka.classifiers.trees.J48 nb = new weka.classifiers.trees.J48();
@@ -318,21 +310,5 @@ public class DecisionTree extends AppCompatActivity
             canvas.drawOval(p.getX() - 10, p.getY() - 10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
         return bitmap;
-    }
-    private String tempArff()
-    {
-        return "@RELATION house\n" +
-                "\n" +
-                "@ATTRIBUTE X NUMERIC\n" +
-                "@ATTRIBUTE Y NUMERIC\n" +
-                "\n" +
-                "@DATA\n" +
-                "0,0 \n" +
-                "1,2 \n" +
-                "2,4 \n" +
-                "3,6 \n" +
-                "4,8 \n" +
-                "5,10 \n" +
-                "6,12";
     }
 }

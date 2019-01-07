@@ -143,8 +143,13 @@ public class k_means_cluster_activity extends AppCompatActivity {
                     public void onClick(View view) {
                         buttons.get(Names.valueOf("ADD_CENTROID").ordinal()).setVisibility(View.GONE);
                         buttons.get(Names.valueOf("UPDATE").ordinal()).setVisibility(View.VISIBLE);
-                        buttons.get(Names.valueOf("REASSIGN").ordinal()).setVisibility(View.VISIBLE);
                         text.setText("Update centroids and reassign points!");
+                        graph.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View view, MotionEvent motionEvent) {
+                                return false;
+                            }
+                        });
                     }
                 });
             }
@@ -168,7 +173,10 @@ public class k_means_cluster_activity extends AppCompatActivity {
             public void onClick(View view) {
                 groupPoints();
                 graph.setImageBitmap(draw());
-            }
+                buttons.get(Names.valueOf("REASSIGN").ordinal()).setVisibility(View.GONE);
+                buttons.get(Names.valueOf("UPDATE").ordinal()).setVisibility(View.VISIBLE);
+
+                }
         });
 
         buttons.get(Names.valueOf("UPDATE").ordinal()).setOnClickListener(new View.OnClickListener() {
@@ -202,6 +210,9 @@ public class k_means_cluster_activity extends AppCompatActivity {
                     }
                 }
                 graph.setImageBitmap(draw());
+
+                buttons.get(Names.valueOf("REASSIGN").ordinal()).setVisibility(View.VISIBLE);
+                buttons.get(Names.valueOf("UPDATE").ordinal()).setVisibility(View.GONE);
             }
         });
         Button about = findViewById(R.id.kmc_about);

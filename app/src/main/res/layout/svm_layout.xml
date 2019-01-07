@@ -31,30 +31,68 @@
         android:id="@+id/svm_buttons_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/svm_about"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/svm_text">
 
-        <Button
-            android:id="@+id/restart_svm"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reset" />
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/svm_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/color_options"
-            android:prompt="@string/nb_prompt"/>
-        <Spinner
-            android:id="@+id/svm_type"
+            <Button
+                android:id="@+id/restart_svm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reset" />
+
+            <Spinner
+                android:id="@+id/svm_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/color_options"
+                android:prompt="@string/nb_prompt"/>
+            <Spinner
+                android:id="@+id/svm_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/svm_options"/>
+
+
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/svm_options"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cost:"/>
+          <EditText
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/svm_cost"
+              android:text="1.0"
+              android:inputType="numberDecimal"/>
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="0dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gamma:"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/svm_gamma"
+                android:text="0.0001"
+                android:inputType="numberDecimal"/>
+
+        </LinearLayout>
 
     </LinearLayout>
     <Button
