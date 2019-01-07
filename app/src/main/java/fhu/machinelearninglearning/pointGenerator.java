@@ -22,13 +22,23 @@ public class pointGenerator {
         //Select X coordinates.
         //The maximum cluster radius is a constant calculated based on the img view size.
         //That constant serves as the lower bound for all the random centroid calculations.
-        int A_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
-        int B_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
-        int C_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int A_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int B_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int C_ClusterX = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
         //Select Y coordinates.
-        int A_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
-        int B_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
-        int C_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int A_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int B_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+//        int C_ClusterY = random.nextInt(clusterUpperBound - maxClusterRadius) + maxClusterRadius;
+
+        int A_ClusterX = (int) (length * .25);
+        int A_ClusterY = (int) (length * .25);
+
+        int B_ClusterX = (int) (length * .75);
+        int B_ClusterY = (int) (length * .25);
+
+
+        int C_ClusterX = (int) (length * .5);
+        int C_ClusterY = (int) (length * .75);
 
         int clusterSize = total/3;
         //Cluster point calculations
