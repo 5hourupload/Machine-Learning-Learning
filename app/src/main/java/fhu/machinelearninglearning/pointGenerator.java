@@ -78,15 +78,23 @@ public class pointGenerator {
         double angleDifferential = 360/total;
         for(int i = 0; i < total; i++){
             int borderWidth= random.nextInt(10);
-            int X = centerX + ((radius + borderWidth) * (int)Math.cos(Math.toRadians(angleDifferential * i)));
-            int Y = centerY + ((radius + borderWidth) * (int)Math.sin(Math.toRadians(angleDifferential * i)));
-            points.add(new point(X,Y));
+            int borderX = centerX + ((radius + borderWidth) * (int)Math.cos(Math.toRadians(angleDifferential * i)));
+            int borderY = centerY + ((radius + borderWidth) * (int)Math.sin(Math.toRadians(angleDifferential * i)));
+            points.add(new point(borderX,borderY));
         }
         //Generate smile points
-
-
+        int minAngle = 225;
+        int maxAngle = 315;
+        for(int i = 0; i < 100; i++){
+            int angle = random.nextInt(maxAngle - minAngle) + minAngle;
+            int smileWidth = random.nextInt(10);
+            int smileX = centerX + ((40 + smileWidth) * (int)Math.cos(Math.toRadians(angle)));
+            int smileY = centerY + ((40 + smileWidth) * (int)Math.sin(Math.toRadians(angle)));
+            points.add(new point(smileX, smileY));
+        }
         //Generate eye and nose points
-
+        int maxEyeNoseRadius = length/5;
+        
 
         return points;
     }
