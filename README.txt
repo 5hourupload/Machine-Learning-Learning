@@ -1,5 +1,3 @@
-# Machine-Learning-Learning
-
 APPLICATION TITLE:
 Machine Learning Learning
 
