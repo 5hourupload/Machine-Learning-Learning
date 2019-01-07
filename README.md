@@ -20,4 +20,5 @@ https://github.com/5hourupload/Machine-Learning-Learning
 
 TEAM MEMBERS:
 Alan Shen - Undergraduate sophomore at UNM studying Computer Science
+
 Charley Bickel - Undergraduate sophomore at UNM studying Computer Science
