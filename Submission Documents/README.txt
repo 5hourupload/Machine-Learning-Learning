@@ -1,12 +1,12 @@
 APPLICATION TITLE:
-Machine Learning Learning (Android Application)
+Machine Learning Learning
 
 CONTACT INFORMATION:
 Alan Shen - alanshen101@gmail.com
 Charley Bickel - cbickel@unm.edu
 
 DESCRIPTION:
-Machine Learning Learning teaches you about different machine learning algorithms. 
+Machine Learning Learning (Android Application) teaches you about different machine learning algorithms. 
 The user can input their own data and adjust algorithm parameters to see how different algorithms
 behave and gain an intuitive understanding of how to use these algorithms.
 
