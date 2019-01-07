@@ -2,7 +2,7 @@ APPLICATION TITLE:
 Machine Learning Learning (Android Application)
 
 CONTACT INFORMATION:
-Alan Shen - alanshen101@gmail.com; 505-550-0216; UNM ID:101749067
+Alan Shen - alanshen101@gmail.com
 Charley Bickel - cbickel@unm.edu
 
 DESCRIPTION:
