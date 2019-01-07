@@ -25,9 +25,10 @@ public class MachineLearningAlgorithmsMenuActivity extends AppCompatActivity
         algorithms[1] = new Algorithm(R.drawable.svm_icon, "Support Vector Machine",
                 "Supervised Learning Algorithm", SVM.class);
         algorithms[2] = new Algorithm(R.drawable.nb_icon, "Naive Bayes", "Supervised Learning Algorithm", NB.class);
-        algorithms[3] = new Algorithm(R.drawable.linreg_icon, "Linear Regression", "Regression Model", LinReg.class);
-        algorithms[4] = new Algorithm(R.drawable.logreg_icon, "Logistic Regression", "Regression Model", LogReg.class);
-        algorithms[5] = new Algorithm(R.drawable.dectree_icon, "Decision Tree", "Supervised Learning Algorithm", DecisionTree.class);
+        algorithms[3] = new Algorithm(R.drawable.dectree_icon, "Decision Tree", "Supervised Learning Algorithm", DecisionTree.class);
+
+        algorithms[4] = new Algorithm(R.drawable.linreg_icon, "Linear Regression", "Regression Model", LinReg.class);
+        algorithms[5] = new Algorithm(R.drawable.logreg_icon, "Logistic Regression", "Regression Model", LogReg.class);
 
         //uses custom adapter to create an image with two rows of text in a single row through custom_row.xml
         ListAdapter queAdapter = new ListViewAdapter(this, algorithms);

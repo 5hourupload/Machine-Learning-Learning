@@ -6,22 +6,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getSupportActionBar().hide();
         Button startButton = findViewById(R.id.startButton);
-        startButton.setOnClickListener(new View.OnClickListener()
-        {
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(getApplicationContext(), MainMenuActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MachineLearningAlgorithmsMenuActivity.class);
                 startActivity(intent);
             }
         });

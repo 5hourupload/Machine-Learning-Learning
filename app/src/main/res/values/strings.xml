@@ -51,4 +51,6 @@
         used for classification and regression. The goal is to create a model that predicts the value
         of a target variable by learning simple decision rules inferred from the data features. Add points
         to the screen to see how they are classified.</string>
+    <string name="home_description">Learn about different machine learning algorithms and gain
+    an intuitive understanding of how they behave.</string>
 </resources>
