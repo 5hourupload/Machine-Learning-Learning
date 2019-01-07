@@ -10,37 +10,28 @@
         android:id="@+id/nb_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/nb_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#ffffff"/>
 
     <TextView
+        android:id="@+id/nb_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:text="@string/tap_screen"
-        android:id="@+id/nb_text_view"
         app:layout_constraintBottom_toTopOf="@+id/nb_linear_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nb_view"/>
+        app:layout_constraintTop_toBottomOf="@id/nb_view" />
+
     <LinearLayout
         android:id="@+id/nb_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/nb_about"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nb_text_view">
@@ -56,20 +47,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/color_options"
-            android:prompt="@string/nb_prompt"/>
-
-
+            android:prompt="@string/nb_prompt" />
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/nb_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="About naive bayes"
-        android:id="@+id/nb_about"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nb_linear_layout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nb_linear_layout" />
 
 </android.support.constraint.ConstraintLayout>

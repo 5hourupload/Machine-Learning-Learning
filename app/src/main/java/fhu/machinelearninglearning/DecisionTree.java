@@ -2,10 +2,12 @@ package fhu.machinelearninglearning;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -128,31 +131,37 @@ public class DecisionTree extends AppCompatActivity
         });
 
         Button about = findViewById(R.id.dt_about);
-        about.setOnClickListener(new View.OnClickListener()
-        {
+        about.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                // custom dialog
+            public void onClick(View view) {
                 final Dialog dialog = new Dialog(DecisionTree.this);
                 dialog.setContentView(R.layout.dialog);
-                dialog.setTitle("Title...");
-
-                // set the custom dialog components - text, image and button
-//                TextView text = (TextView) dialog.findViewById(R.id.text);
-//                text.setText("Android custom dialog example!");
-//                ImageView image = (ImageView) dialog.findViewById(R.id.image);
-//                image.setImageResource(R.drawable.ic_launcher);
-
-//                Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-                // if button is clicked, close the custom dialog
-//                dialogButton.setOnClickListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        dialog.dismiss();
-//                    }
-//                });
-
+                TextView title = dialog.findViewById(R.id.about_title);
+                title.setText(R.string.dt_title);
+                TextView description = dialog.findViewById(R.id.about_description);
+                description.setText(R.string.dt_description);
+                Button launchWiki = dialog.findViewById(R.id.about_button_wiki);
+                launchWiki.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Decision_tree"));
+                        startActivity(intent);
+                    }
+                });
+                Button launchSklearn = dialog.findViewById(R.id.about_button_sci);
+                launchSklearn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
+                        intent.setData(Uri.parse("https://scikit-learn.org/stable/modules/tree.html"));
+                        startActivity(intent);
+                    }
+                });
                 dialog.show();
             }
         });
@@ -200,6 +209,7 @@ public class DecisionTree extends AppCompatActivity
         Bitmap bitmap = Bitmap.createBitmap(length/*width*/, length/*height*/, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
 
+        if (points.size() == 0) return bitmap;
 
         BufferedReader br;
         try
@@ -209,15 +219,6 @@ public class DecisionTree extends AppCompatActivity
             br = new BufferedReader(new InputStreamReader(is));
             Instances data = new Instances(br);
             data.setClassIndex(data.numAttributes() - 1);
-
-
-
-
-            String str1 = tempArff();
-            InputStream is1 = new ByteArrayInputStream(str1.getBytes());
-            br = new BufferedReader(new InputStreamReader(is1));
-            Instances data1 = new Instances(br);
-            data1.setClassIndex(data1.numAttributes() - 1);
 
 //            NaiveBayes nb = new NaiveBayes();
             weka.classifiers.trees.J48 nb = new weka.classifiers.trees.J48();
@@ -309,21 +310,5 @@ public class DecisionTree extends AppCompatActivity
             canvas.drawOval(p.getX() - 10, p.getY() - 10, p.getX() + 10, p.getY() + 10, p.getPaint());
         }
         return bitmap;
-    }
-    private String tempArff()
-    {
-        return "@RELATION house\n" +
-                "\n" +
-                "@ATTRIBUTE X NUMERIC\n" +
-                "@ATTRIBUTE Y NUMERIC\n" +
-                "\n" +
-                "@DATA\n" +
-                "0,0 \n" +
-                "1,2 \n" +
-                "2,4 \n" +
-                "3,6 \n" +
-                "4,8 \n" +
-                "5,10 \n" +
-                "6,12";
     }
 }
