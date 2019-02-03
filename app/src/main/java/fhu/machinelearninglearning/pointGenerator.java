@@ -80,31 +80,45 @@ public class pointGenerator {
     }
 
     public static List<point> generateSmileyFace(int total, int length){
+        points.clear();
         //Generate border points
         //Find center
         int centerX = length/2;
         int centerY = length/2;
-        int radius = (length/2) - 20;
-        double angleDifferential = 360/total;
-        for(int i = 0; i < total; i++){
-            int borderWidth= random.nextInt(10);
-            int borderX = centerX + ((radius + borderWidth) * (int)Math.cos(Math.toRadians(angleDifferential * i)));
-            int borderY = centerY + ((radius + borderWidth) * (int)Math.sin(Math.toRadians(angleDifferential * i)));
+        int radius = (length/2) - 50;
+//        double angleDifferential = 360/(total/2);
+        for(int i = 0; i < 360; i++){
+            int borderWidth= random.nextInt(50);
+            int borderX = centerX + (int)((radius + borderWidth) * Math.cos(Math.toRadians(i)));
+            int borderY = centerY + (int)((radius + borderWidth) * Math.sin(Math.toRadians(i)));
             points.add(new point(borderX,borderY));
         }
         //Generate smile points
-        int minAngle = 225;
-        int maxAngle = 315;
+        int minAngle = 205-180;
+        int maxAngle = 335-180;
         for(int i = 0; i < 100; i++){
             int angle = random.nextInt(maxAngle - minAngle) + minAngle;
-            int smileWidth = random.nextInt(10);
-            int smileX = centerX + ((40 + smileWidth) * (int)Math.cos(Math.toRadians(angle)));
-            int smileY = centerY + ((40 + smileWidth) * (int)Math.sin(Math.toRadians(angle)));
+            int smileWidth = random.nextInt(20);
+            int smileX = centerX + (int)((length/3 + smileWidth) * Math.cos(Math.toRadians(angle)));
+            int smileY = centerY + (int)((length/3 + smileWidth) * Math.sin(Math.toRadians(angle)));
             points.add(new point(smileX, smileY));
         }
-        //Generate eye and nose points
-        int maxEyeNoseRadius = length/5;
-        
+        //Generate eye points
+        int leftEyeCenterX = length/3;
+        int leftEyeCenterY = length/3;
+        for (int i = 0; i <10; i ++)
+        {
+            points.add(new point(leftEyeCenterX + (int)(Math.random() * 30) - 15,
+                    leftEyeCenterY + (int)(Math.random() * 30) - 15));
+        }
+        int rightEyeCenterX = length - length/3;
+        int rightEyeCenterY = length/3;
+        for (int i = 0; i <10; i ++)
+        {
+            points.add(new point(rightEyeCenterX + (int)(Math.random() * 30) - 15,
+                    rightEyeCenterY + (int)(Math.random() * 30) - 15));
+        }
+
 
         return points;
     }
